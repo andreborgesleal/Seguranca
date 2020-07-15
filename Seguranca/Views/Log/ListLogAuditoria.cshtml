@@ -1,0 +1,95 @@
+﻿@model System.Web.Mvc.PagedList<App_Dominio.Repositories.LogAuditoriaRepository>
+@{
+    Layout = null;
+}
+@if (Model != null)
+{
+    <div class="row Scroll" style="padding-top: 20px">
+        <div class="col-md-12 column">
+            <table class="table table-hover table-bordered table-condensed" style="cursor: pointer;">
+                <caption></caption>
+                <thead style="background-color: #fff1a5">
+                    <tr>
+                        <th>ID</th>
+                        <th style="width: 150px">Data</th>
+                        <th>Usuário</th>
+                        <th>Login</th>
+                        <th>Funcionalidade</th>
+                        <th>IP</th>
+                        <th style="text-align: center">Ação</th>
+                    </tr>
+                </thead>
+                @foreach (App_Dominio.Repositories.LogAuditoriaRepository log in Model)
+                {
+                    <tr>
+                        <td>
+                            @log.logId
+                        </td>
+                        <td style="width: 150px">
+                            @log.dt_log.ToString("dd/MM/yyyy HH:mm")
+                        </td>
+                        <td>
+                            @log.nome_usuario
+                        </td>
+                        <td>
+                            @log.login
+                        </td>
+                        <td>
+                            @log.nomeCurto
+                        </td>
+                        <td>
+                            @log.ip
+                        </td>
+                        <td style="width: 10%">
+                            <div class="row-clearfix">
+                                <div class="col-md-12">
+                                    <div class="btn-group btn-group-xs">
+                                        <button class="btn btn-sm" type="button" onclick="Detail('@log.logId')">
+                                            <em class="glyphicon glyphicon-edit"></em> <span style="text-decoration: none; color: #646464">Detalhar</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" style="margin-bottom: -20px; margin-top: -10px">
+            @Html.Partial("Paginacao", Model)
+        </div>
+    </div>
+    <div id="div-log"></div>
+}
+else
+{
+    @Html.Partial("_AcessoNegado")
+}
+
+<script type="text/javascript">
+    function Detail(id) {
+        var link = "Detail";
+
+        link = encodeURI(link + '?logId=' + id + '&noCahce=' + new Date());
+
+        CarregandoIn();
+
+        $('#div-log').load(link);
+
+        $(document).ajaxSuccess(function (event, xhr, settings) {
+            $('#carregando').css("visibility", "hidden");
+            $('#carregando').css("height", "0px");
+            $('#carregando').css("margin-top", "0%");
+            $('#carregando').css("margin-left", "0%");
+        }).error(function () {
+            $('#carregando').css("visibility", "hidden");
+            $('#carregando').css("height", "0px");
+            $('#carregando').css("margin-top", "0%");
+            $('#carregando').css("margin-left", "0%");
+        })
+    }
+
+</script>

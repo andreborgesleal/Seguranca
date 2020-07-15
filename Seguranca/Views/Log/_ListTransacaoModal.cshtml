@@ -1,0 +1,63 @@
+﻿@model System.Web.Mvc.PagedList<App_Dominio.Repositories.TransacaoRepository>
+@{
+    Layout = null;
+}
+
+@if (Model != null && Model.Count > 0)
+{
+    <div class="row Scroll">
+        <div class="col-md-12" style="padding-right: 0px;">
+            <table class="table table-hover table-bordered table-condensed" style="cursor: pointer">
+                <caption></caption>
+                <thead style="background-color: #fff1a5">
+                    <tr>
+                        <th>Funcionalidade</th>
+                        <th>Descrição</th>
+                        <th>Referência</th>
+                    </tr>
+                </thead>
+                @foreach (App_Dominio.Repositories.TransacaoRepository tra in Model)
+                {
+                    string _span = tra.referencia == "Menu Suspenso" ? "font-weight: bold" : ""; ;
+                    string _class = "";
+                    string _onClick = tra.referencia == "Barra de Menu" || tra.referencia == "Menu Suspenso" ? "" : "Move('" + tra.transacaoId.ToString() + "', '" + tra.nomeCurto + "')";
+                    if (tra.url == "#")
+                    {
+                        _class = "label label-default";
+                    }
+                    <tr onclick="@_onClick">
+                        <td style="width: 25%">
+                            <div style="text-indent: @((tra.referencia == "Barra de Menu" ? 0 : tra.referencia == "Menu Suspenso" ? 1 : 2) * 20)px; @_span">
+                                <span class="@_class">@tra.nomeCurto</span>
+                            </div>
+                        </td>
+                        <td>
+                            @if(tra.url != "#")
+                            {
+                                <span style="@_span">@tra.nome</span><br /><small>@tra.url</small>    
+                            }
+                            else
+                            {
+                                <span style="@_span">@tra.nome</span><br />
+                            }
+                        </td>
+                        <td style="width: 15%">
+                            <span style="@_span">@tra.referencia</span>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="margin-bottom: -20px; margin-top: -10px">
+            @Html.Partial("Paginacao", Model)
+        </div>
+    </div>
+}
+else
+{
+    @Html.Partial("_AcessoNegadoModal")
+}
+
+

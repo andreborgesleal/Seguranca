@@ -1,0 +1,53 @@
+﻿@using Seguranca.Models.Enumeracoes;
+@model System.Web.Mvc.PagedList<App_Dominio.Repositories.TransacaoRepository>
+@{
+    Layout = null;
+    Model.action = "../Log/_ListTransacaoModal";
+    string cabecalho = ViewBag.Header;
+}
+
+<div class="row">
+    <div class="col-md-12" style="margin: 0px">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button> <a class="navbar-brand" href="#">Sistema</a>
+            </div>
+            <div class="collapse navbar-collapse col-md-10" id="bs-example-navbar-collapse-1">
+                @using (Ajax.BeginForm(null, null, new AjaxOptions { HttpMethod = "get" }, new { @class = "navbar-form navbar-left", @role = "search" }))
+                {
+                    <div class="form-group col-md-12">
+                        <div class="row">
+                            <div class="col-md-10" style="top: 3px">
+                                <div class="input-group">
+                                    @Html.DropDownList("codigo", new BindDropDownList().Sistema("", "Segurança"), new { @class = "form-control input-sm", @style="width: 200px" })
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-default" onclick="Refresh(0, getPageSize(), '@Model.action', '@Model.DivId')">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </nav>
+        <div id="div-list" style="padding-top: 0px">
+            @Html.Partial("../Log/_ListTransacaoModal", Model)
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function Move(id, descricao) {
+        $("#transacaoId").val(id);
+        $("#transacao1Id").val(id);
+        $("#nome_transacao").val(descricao);
+        $("#nome_transacao1").val(descricao);
+        $("#btnModal").click();
+    }
+</script>
+

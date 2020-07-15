@@ -1,0 +1,24 @@
+﻿@model System.Web.Mvc.PagedList<App_Dominio.Repositories.UsuarioRepository>
+@{
+    Layout = null;
+    Model.action = "../Usuarios/_ListUsuarioModal";
+}
+
+<div class="row">
+    <div class="col-md-12" style="margin: 0px">
+        @Html.Partial("_Filter", Model)
+        <div id="div-list" style="padding-top: 0px">
+            @Html.Partial("../Usuarios/_ListUsuarioModal", Model)
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function Move(id, descricao) {
+        $("#usuarioId").val(id);
+        $("#usuario1Id").val(id);
+        $("#nome_usuario").val(descricao);
+        $("#nome_usuario1").val(descricao);
+        $("#btnModal").click();
+    }
+</script>
